@@ -1,0 +1,10 @@
+wp:
+  image: "wordpress"
+  tag: "latest"
+  port: 80
+
+db:
+  image: "mysql"
+  tag: "5.5"
+  name: "wp"
+  port: 3306

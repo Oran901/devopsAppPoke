@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet 
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.db.image }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-{{ .Values.db.image }}
+  template:
+    metadata:
+      name: {{ .Release.Name }}-{{ .Values.db.image }}
+      labels:
+        app: {{ .Release.Name }}-{{ .Values.db.image }}
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: {{ .Release.Name }}-{{ .Values.db.image }}
+          image: {{ .Values.db.image }}:{{ .Values.db.tag }}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: storage
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-secret-mysql
+                  key: password
+            - name: MYSQL_DATABASE
+              value: {{ .Release.Name }}-{{ .Values.db.name }}
+          ports:
+            - containerPort: {{ .Values.db.port }}  
+              protocol: TCP
+  volumeClaimTemplates:
+    - metadata:
+        name: storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi
