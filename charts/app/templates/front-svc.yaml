@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}-{{ .Values.front.image }}-svc
 spec:
-  type: ClusterIP
+  type: NodePort 
   selector:
     app: {{ .Release.Name }}-{{ .Values.front.image }}
   ports:

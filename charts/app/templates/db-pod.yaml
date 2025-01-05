@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.db.image }} 
+  labels:
+    app: {{ .Release.Name }}-{{ .Values.db.image }}
+spec:
+  containers:
+    - name: {{ .Values.db.image }}
+      image: {{ .Values.db.image }}:{{ .Values.db.tag }}
+      ports:
+        - containerPort: {{ .Values.db.port }}
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-secret-mysql
+              key: password
+        - name: MYSQL_DATABASE
+          value: "{{ .Values.db.env.database }}"
+        - name: MYSQL_USER
+          value: "{{ .Values.db.env.user }}"
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-secret-mysql
+              key: password

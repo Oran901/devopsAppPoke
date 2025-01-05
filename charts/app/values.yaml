@@ -3,6 +3,7 @@ front:
   image: "pokerogue-client"
   tag: "v1"
   port: 8000
+  replica: 2
   env:
     enable_login: "-1"    # -1 for disabled
     enable_tutorial: "0"  # -1 for disabled
@@ -15,8 +16,15 @@ back:
   image: "rogueserver"
   tag: "v1"
   port: 8001
+  replica: 2
   env:
-    dbaddr: db
     dbuser: pokerogue
-    dbpass: pokerogue
     dbname: pokeroguedb
+
+db:
+  image: mariadb
+  tag: "11"
+  port: "3306"
+  env:
+    database: pokeroguedb
+    user: pokerogue

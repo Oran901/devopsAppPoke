@@ -5,7 +5,7 @@ metadata:
   labels:
     app: {{ .Release.Name }}-{{ .Values.front.image }}
 spec:
-  replicas: 3
+  replicas: {{ .Values.front.replica }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-{{ .Values.front.image }}
@@ -20,17 +20,17 @@ spec:
           image: {{ .Values.front.repo }}/{{ .Values.front.image }}:{{ .Values.front.tag }}
           env:
             - name: VITE_BYPASS_LOGIN
-              value: {{ .Values.front.env.enable_login }}
+              value: "{{ .Values.front.env.enable_login }}"
             - name: VITE_BYPASS_TUTORIAL
-              value: {{ .Values.front.env.enable_tutorial }}
+              value: "{{ .Values.front.env.enable_tutorial }}"
             - name: VITE_SERVER_URL
               value: "http://{{ .Release.Name }}-{{ .Values.back.image }}-svc:8001"
             - name: VITE_DISCORD_CLIENT_ID
-              value: {{ .Values.front.env.discord_id }}
+              value: "{{ .Values.front.env.discord_id }}"
             - name: VITE_GOOGLE_CLIENT_ID
-              value: {{ .Values.front.env.google_id }}
+              value: "{{ .Values.front.env.google_id }}"
             - name: VITE_I18N_DEBUG
-              value: {{ .Values.front.env.debug }}
+              value: "{{ .Values.front.env.debug }}"
           ports:
             - containerPort: 8000
               protocol: TCP

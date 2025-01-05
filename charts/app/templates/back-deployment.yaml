@@ -5,7 +5,7 @@ metadata:
   labels:
     app: {{ .Release.Name }}-{{ .Values.back.image }}
 spec:
-  replicas: 3
+  replicas: {{ .Values.back.replica }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-{{ .Values.back.image }}
@@ -20,15 +20,15 @@ spec:
           image: {{ .Values.back.repo }}/{{ .Values.back.image }}:{{ .Values.back.tag }}
           env:
             - name: dbaddr
-              value: "db"
+              value: "{{ .Release.Name }}-{{ .Values.db.image }}-svc"
             - name: dbuser
-              value: "pokerogue"
+              value: "{{ .Values.back.env.dbuser  }}"
             - name: dbname
-              value: "pokeroguedb"
+              value: "{{ .Values.back.env.dbname }}"
             - name: gameurl
-              value: "http://{{ .Release.Name }}-{{ .Values.front.image }}-svc:8000"
+              value: "http://{{ .Release.Name }}-{{ .Values.front.image }}-svc:{{ .Values.front.port }}"
             - name: callbackurl
-              value: "http://{{ .Release.Name }}-{{ .Values.back.image }}-svc:8001"
+              value: "http://{{ .Release.Name }}-{{ .Values.back.image }}-svc:{{ .Values.back.port }}"
             - name: dbpass
               valueFrom:
                 secretKeyRef:
