@@ -28,3 +28,6 @@ db:
   env:
     database: pokeroguedb
     user: pokerogue
+
+ingress:
+  domain: oyad.store
