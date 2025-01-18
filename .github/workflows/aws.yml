@@ -27,9 +27,10 @@
 name: Deploy to Amazon ECR
 
 on:
+  push:
+    branches: [ "dev" ]  # Triggers on pushes to the 'dev' branch
   pull_request:
-    branches: [ "dev" ]  # Triggers on pull requests targeting the 'dev' branch
-
+    branches: [ "prod" ]  # Triggers on pull requests targeting the 'prod' branch
 env:
   AWS_REGION: us-east-1                 # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY_FRONT: 767397954823.dkr.ecr.us-east-1.amazonaws.com/quotes-dev-frontend           # set this to your Amazon ECR repository name
