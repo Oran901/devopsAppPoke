@@ -27,8 +27,8 @@
 name: Deploy to Amazon ECR
 
 on:
-  push:
-    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]  # Triggers on pull requests targeting the 'dev' branch
 
 env:
   AWS_REGION: us-east-1                 # set this to your preferred AWS region, e.g. us-west-1
