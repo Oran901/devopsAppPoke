@@ -1,0 +1,51 @@
+name: Deploy to Amazon ECR
+
+on:
+  push:
+    branches: [ "dev" ]  # Triggers on pushes to the 'dev' branch
+  pull_request:
+    branches: [ "prod" ]  # Triggers on pull requests targeting the 'prod' branch
+env:
+  AWS_REGION: us-east-1                 # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY_FRONT: quotes-dev-frontend           # set this to your Amazon ECR repository name
+  ECR_REPOSITORY_BACK: quotes-dev-backend           # set this to your Amazon ECR repository name
+
+permissions:
+  contents: read
+  id-token: write
+
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::767397954823:role/github-actions
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image-front
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_FRONT:$IMAGE_TAG ./app
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONT:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY_FRONT:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_BACK:$IMAGE_TAG ./api
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACK:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY_BACK:$IMAGE_TAG" >> $GITHUB_OUTPUT
