@@ -33,8 +33,8 @@ on:
     branches: [ "prod" ]  # Triggers on pull requests targeting the 'prod' branch
 env:
   AWS_REGION: us-east-1                 # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY_FRONT: 767397954823.dkr.ecr.us-east-1.amazonaws.com/quotes-dev-frontend           # set this to your Amazon ECR repository name
-  ECR_REPOSITORY_BACK: 767397954823.dkr.ecr.us-east-1.amazonaws.com/quotes-dev-backend           # set this to your Amazon ECR repository name
+  ECR_REPOSITORY_FRONT: quotes-dev-frontend           # set this to your Amazon ECR repository name
+  ECR_REPOSITORY_BACK: quotes-dev-backend           # set this to your Amazon ECR repository name
 
 permissions:
   contents: read
