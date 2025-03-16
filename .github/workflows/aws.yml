@@ -8,7 +8,7 @@ on:
 env:
   AWS_REGION: us-east-1                 
   ECR_REPOSITORY_FRONT: quotes-dev-frontend           
-  ecr_repository_back: quotes-dev-backend           
+  ECR_REPOSITORY_BACK: quotes-dev-backend           
 
 permissions:
   contents: read
