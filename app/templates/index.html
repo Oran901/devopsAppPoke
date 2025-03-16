@@ -2,21 +2,133 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Quotes Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fdf6f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #fff8f0;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(150, 90, 50, 0.2);
+            width: 90%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            color: #7a4e2d;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 12px;
+            color: #5c3a28;
+            font-weight: bold;
+        }
+        input, textarea {
+            font-family: Arial, sans-serif; 
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #d8c2a3;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #fffdf9;
+            color: #3a2a1f;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d99058;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #c37940;
+        }
+        .quote-list {
+            margin-top: 30px;
+        }
+        .quote-item {
+            background-color: #fff3e6;
+            padding: 15px;
+            border-left: 5px solid #d99058;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            position: relative;
+        }
+        .quote-item p {
+            margin: 0;
+            color: #4d2d1a;
+            font-size: 17px;
+        }
+        .quote-item span {
+            display: block;
+            margin-top: 6px;
+            color: #7a5a43;
+            font-size: 14px;
+        }
+        .delete-form {
+            margin-top: 10px;
+        }
+        .delete-button {
+            background-color: #c66;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        .delete-button:hover {
+            background-color: #a94444;
+        }
+    </style>
 </head>
 <body>
-    <h1>Quotes Gallery</h1>
-    <form method="POST">
-        <input type="text" name="quote" placeholder="Enter a quote" required>
-        <input type="text" name="author" placeholder="Author">
-        <button type="submit">Submit</button>
-    </form>
-    <ul>
-        {% for quote in quotes %}
-            <li>"{{ quote.quote }}" - {{ quote.author }}</li>
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <h1>Submit a New Quote</h1>
+        <form action="/submit" method="post">
+            <label for="author">Author</label>
+            <input type="text" id="author" name="author" required>
+            <label for="quote">Quote</label>
+            <textarea id="quote" name="quote" required></textarea>
+            <button type="submit">Submit Quote</button>
+        </form>
+        <div class="quote-list">
+            {% for quote in quotes %}
+            <div class="quote-item">
+                <p>"{{ quote.text }}"</p>
+                <span>- {{ quote.author }}</span>
+                <form class="delete-form" action="/delete/{{ quote.id }}" method="post">
+                    <button type="submit" class="delete-button">Delete</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </body>
 </html>
-
-
