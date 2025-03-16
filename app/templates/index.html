@@ -77,6 +77,7 @@
             border-left: 5px solid #d99058;
             margin-bottom: 12px;
             border-radius: 6px;
+            position: relative;
         }
         .quote-item p {
             margin: 0;
@@ -88,6 +89,22 @@
             margin-top: 6px;
             color: #7a5a43;
             font-size: 14px;
+        }
+        .delete-form {
+            margin-top: 10px;
+        }
+        .delete-button {
+            background-color: #c66;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        .delete-button:hover {
+            background-color: #a94444;
         }
     </style>
 </head>
@@ -106,6 +123,9 @@
             <div class="quote-item">
                 <p>"{{ quote.text }}"</p>
                 <span>- {{ quote.author }}</span>
+                <form class="delete-form" action="/delete/{{ quote.id }}" method="post">
+                    <button type="submit" class="delete-button">Delete</button>
+                </form>
             </div>
             {% endfor %}
         </div>
